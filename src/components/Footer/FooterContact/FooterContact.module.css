@@ -1,0 +1,131 @@
+.FooterContact {
+    margin: 0 auto;
+    margin-bottom: 20px;
+    display: flex;
+    flex-flow: column-reverse;
+}
+
+.FooterContact span {
+    display: block;
+    text-align: center;
+}
+
+.FooterContact h6 {
+    color: rgba(0,0,0,0.8);
+    font-size: .9rem;
+    text-align: center;
+}
+
+.FooterContact span a {
+    text-align: center;
+    color: #000;
+    font-size: .9rem;
+    opacity: 0.5;
+    text-decoration: underline;
+    display: inline-block;
+}
+
+.SocialIcons {
+    margin-top: 0;
+    margin-bottom: 30px;
+    display: flex;
+}
+
+.SocialIcons a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 40px;
+    margin-left: 40px;
+    background-color: rgba(255, 255, 255, 0);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    transition: 0.4s;
+    color: rgba(0,0,0,0.5);
+    position: relative;
+}
+
+.SocialIcons a:hover {
+    transform: scale(1.1, 1.1);
+    /* background-color: rgba(255, 255, 255, 1); */
+    color: #242424;
+}
+
+.SocialIcons a:hover > .HoverStyle {
+    opacity: 1;
+    transform: scale(1, 1);
+}
+
+.SocialIcon {
+    /* color: #fff; */
+    font-size: 1.7rem;
+    width: 100%;
+    z-index: 2;
+}
+
+.HoverStyle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: 0.5s transform cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: scale(0.6, 0.6);
+}
+
+@media (min-width: 500px) {
+    .FooterContact {
+        margin: 0 auto;
+        display: block;
+    }
+
+    .FooterContact span {
+        display: block;
+        text-align: left;
+    }
+
+    .FooterContact span a {
+        color: #fff;
+        opacity: 0.5;
+        text-decoration: underline;
+        display: inline-block;
+        font-size: 1rem;
+    }
+
+    .FooterContact h6 {
+        color: #fff;
+        font-size: 1rem;
+        text-align: left;
+    }
+
+    .SocialIcons {
+        margin-top: 15px;
+        display: flex;
+    }
+
+    .SocialIcons a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 20px;
+        margin-left: 0;
+        background-color: rgba(255, 255, 255, 0);
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        transition: 0.4s;
+        color: #fff;
+        position: relative;
+    }
+
+    .SocialIcon {
+        /* color: #fff; */
+        font-size: 1rem;
+        width: 100%;
+        z-index: 2;
+    }
+}

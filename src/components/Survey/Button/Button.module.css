@@ -1,0 +1,20 @@
+.Button {
+    text-transform: uppercase;
+    margin: 90px 15px 0px 15px;
+    padding-top: .6rem !important;
+    padding-bottom: .6rem !important;
+    width: 120px;
+    display: inline-block !important;
+    font-size: 1.1rem !important;
+    /* margin-left: 20px; */
+}
+
+@media (min-width: 500px) {
+    .Button {
+        margin: 120px 15px 0px 15px;
+        padding-top: .8rem !important;
+        padding-bottom: .8rem !important;
+        width: 170px;
+        font-size: 1.25rem !important;
+    }
+}

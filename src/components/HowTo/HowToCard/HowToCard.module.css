@@ -1,0 +1,16 @@
+.HowToCard {
+    margin: 0 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.HeaderSpan {
+    color: white;
+    background-color: red;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

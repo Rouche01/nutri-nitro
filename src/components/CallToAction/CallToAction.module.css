@@ -1,0 +1,55 @@
+.CallToAction {
+    font-size: 16px;
+}
+
+.BounceIcon {
+    color: #fff;
+    font-size: 2.5rem;
+    display: block;
+    margin: 0 auto;
+    margin-top: 40px;
+    animation: bounce 2s infinite;
+    -webkit-animation: bounce 2s infinite;
+}
+
+.Button {
+    /* width: 300px !important; */
+    margin-left: 10px;
+}
+
+.CtaButtons {
+    text-align: center;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-around;
+    width: 350px;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+.CtaIcon {
+    width: 80%;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+        -webkit-transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-30px);
+        -webkit-transform: translateY(-30px);
+    }
+    60% {
+        transform: translateY(-15px);;
+        -webkit-transform: translateY(-15px);
+    }
+}
+
+@media (min-width: 500px) {
+    .CtaButtons {
+        width: 600px;
+        margin: 0 auto;
+        margin-top: 30px;
+    }
+}

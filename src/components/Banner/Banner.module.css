@@ -1,0 +1,28 @@
+.Banner {
+    min-height: 200px;
+    position: relative;
+    background: url(../../assets/fruits.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    text-align: center;
+    color: #fff;
+    vertical-align: text-bottom
+}
+
+.DarkOverlay {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    top: 0;
+    left: 0;
+    padding-top: 1.8rem;
+}
+
+
+@media (min-width: 500px) {
+    .DarkOverlay {
+        padding-top: 3.2rem;
+    }
+}

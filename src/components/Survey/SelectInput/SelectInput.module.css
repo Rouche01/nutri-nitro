@@ -1,0 +1,37 @@
+.SelectInput {
+    display: none;
+}
+
+.SelectInput:checked + label, .SelectInput:not(:checked) + label {
+    position: relative;
+    display: block;
+    text-align: center;
+    padding: 20px;
+    width: 400px;
+    font-size: 18px;
+    line-height: 22px;
+    letter-spacing: 1px;
+    margin: 0 auto;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 15px !important;
+    text-align: center;
+    border-radius: 5px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.SelectInput + label {
+    margin: 10px auto 10px auto;
+}
+
+.SelectInput:not(:checked) + label {
+    background-color: #CACACA;
+    margin: 10px auto 10px auto;
+}
+
+.SelectInput:checked + label {
+    background-color: red;
+    color: #fff;
+    margin: 10px auto 10px auto;
+}

@@ -1,0 +1,24 @@
+.EmailSignUp {
+    margin-top: -10px;
+    margin-bottom: 40px;
+    padding: 30px 20px;
+    background-color: #E9E7E6;
+    /* border-radius: 8px; */
+    text-align: center;
+}
+
+@media (min-width: 500px) {
+    .EmailSignUp {
+        margin-top: 10px;
+        margin-bottom: 40px;
+        padding: 50px 40px;
+        background-color: #E9E7E6;
+        border-radius: 8px;
+        text-align: left;
+        
+    }
+
+    .SubscribeForm {
+        padding-right: 10px;
+    }
+}

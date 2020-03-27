@@ -1,0 +1,36 @@
+.Footer {
+    background-color: #fff;
+    padding-top: 0px;
+    padding-bottom: 100px;
+}
+
+.FooterContainer {
+    display: flex;
+    flex-flow: column-reverse;
+}
+
+.FooterMenu {
+    display: flex;
+    flex-flow: column;
+}
+
+@media (min-width: 500px) {
+    .Footer {
+        background-color: #242424;
+        padding: 40px 0;
+    }
+
+    .FooterContainer {
+        display: flex;
+        flex-flow: row;
+        justify-content: space-between;
+    }
+
+    .FooterMenu {
+        display: flex;
+        width: 600px;
+        flex-flow: row;
+        justify-content: space-between;
+    }
+}
+

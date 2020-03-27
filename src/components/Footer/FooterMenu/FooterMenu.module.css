@@ -1,0 +1,29 @@
+.FooterMenu {
+    margin: 0 auto;
+}
+
+.FooterMenu h6 {
+    color: rgba(0,0,0,0.8);
+    text-align: center;
+    font-size: .9rem;
+    /* text-transform: uppercase; */
+}
+
+.FooterMenuList {
+    display: flex;
+    padding-inline-start: 0px;
+}
+
+@media (min-width: 500px) {
+    .FooterMenu h6 {
+        color: #fff;
+        text-align: left;
+        font-size: 1rem;
+        /* text-transform: uppercase; */
+    }
+
+    .FooterMenuList {
+        padding-inline-start: 0px;
+        display: inline-block;
+    }
+}

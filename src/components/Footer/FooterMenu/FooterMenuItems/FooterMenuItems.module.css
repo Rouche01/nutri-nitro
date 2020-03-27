@@ -1,0 +1,25 @@
+.FooterMenuItems {
+    list-style-type: none;
+    margin-bottom: 5px;
+}
+
+.FooterMenuItems a {
+    text-decoration: none;
+    color: rgba(0,0,0,0.6);
+    font-size: .9rem;
+    margin-left: 15px;
+}
+
+.FooterMenuItems a:hover {
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+}
+
+@media (min-width: 500px) {
+    .FooterMenuItems a {
+        text-decoration: none;
+        color: rgba(255,255,255,0.5);
+        font-size: 1rem;
+        margin-left: 0;
+    }
+}

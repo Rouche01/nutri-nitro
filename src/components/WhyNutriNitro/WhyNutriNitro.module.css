@@ -1,0 +1,22 @@
+.WhyNutriNitro {
+    padding-bottom: 50px;
+}
+
+.WhyNutriNitro h2 {
+    text-align: center;
+}
+
+.Container {
+    margin-top: 20px;
+}
+
+@media (min-width: 500px) {
+    .Container {
+        margin-top: 30px;
+    }
+
+    .WhyNutriNitro {
+        padding-top: 30px;
+        padding-bottom: 50px;
+    }
+}

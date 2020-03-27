@@ -1,0 +1,51 @@
+.FooterLogoMenu {
+    margin-top: 20px;
+}
+
+.FooterLogoMenu p {
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.8);
+    font-size: 1.3rem;
+    letter-spacing: -.1rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+.Copyright {
+    margin-top: -10px;
+    text-align: center;
+}
+
+.FooterLogoMenu small {
+    color: rgba(0, 0, 0, 0.4);
+    display: inline-block;
+    font-weight: 500;
+    text-align: center;
+}
+
+@media (min-width: 500px) {
+    .FooterLogoMenu {
+        margin-top: 0;
+    }
+
+    .FooterLogoMenu p {
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1.5rem;
+        letter-spacing: .2rem;
+        font-weight: 500;
+        text-align: left;
+    }
+
+    .Copyright {
+        margin-top: 0px;
+        text-align: left;
+    }
+
+    .FooterLogoMenu small {
+        color: rgba(255, 255, 255, 0.4);
+        display: block;
+        font-weight: 500;
+        text-align: left;
+    }
+}

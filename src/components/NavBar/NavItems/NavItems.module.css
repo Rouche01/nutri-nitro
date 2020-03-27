@@ -1,0 +1,26 @@
+.NavItems {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    align-items: flex-end;
+    margin: 0;
+    padding: 0;
+}
+
+.Button {
+    width: 100%;
+    padding: .6rem 0rem !important;
+}
+
+@media (min-width: 500px) {
+    .NavItems {
+        flex-flow: row;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .Button {
+        margin-left: 50px;
+        padding: .375rem 1.2rem !important;
+    }
+}
