@@ -7,13 +7,13 @@
     display: block;
     text-align: center;
     padding: 20px;
-    width: 400px;
+    width: 300px;
     font-size: 18px;
     line-height: 22px;
     letter-spacing: 1px;
     margin: 0 auto;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin-left: 15px;
+    margin-right: 15px;
     margin-bottom: 15px !important;
     text-align: center;
     border-radius: 5px;
@@ -31,7 +31,13 @@
 }
 
 .SelectInput:checked + label {
-    background-color: red;
+    background-color: #cf3721;
     color: #fff;
     margin: 10px auto 10px auto;
+}
+
+@media (min-width: 500px) {
+    .SelectInput:checked + label, .SelectInput:not(:checked) + label {
+        width: 400px;
+    }
 }

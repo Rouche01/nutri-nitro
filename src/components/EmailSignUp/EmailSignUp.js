@@ -12,17 +12,17 @@ const emailSignUp = (props) => (
     <div>
         <Container>
             <hr/>
-            <Row className={`align-items-center`, styles.EmailSignUp}>
+            <Row className={[`align-items-center`, styles.EmailSignUp].join(' ')}>
                 <Col sm className="align-self-center">
                     <HeaderPlusSub title="Sign Up to Stay Updated">
-                        Get $15 off, and receive the latest recipes by subscribing now!
+                    Don't miss out on our great offers & latest deals. Join our mailing list. No spam, no ads.
                     </HeaderPlusSub>
                 </Col>
                 <Col sm>
                     <Form className={styles.SubscribeForm}>
                         {/* <Form.Control className="mb-3" type="text" size="lg" placeholder="Your name" /> */}
                         <Form.Control className="mb-3" type="email" size="lg" placeholder="Your email" />
-                        <Button className="btn-block" size="lg" type="submit" variant="danger">Subscribe</Button>
+                        <Button className={[styles.subscribeBtn, 'btn-block'].join(' ')} size="lg" type="submit" variant="danger">Subscribe</Button>
                     </Form>
                 </Col>
             </Row>

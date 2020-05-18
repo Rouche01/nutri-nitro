@@ -7,9 +7,17 @@
     padding: 0;
 }
 
+.NavItems a {
+    display: inline-block !important;
+    width: 100%;
+}
+
 .Button {
     width: 100%;
     padding: .6rem 0rem !important;
+    background-color: #cf3721 !important;
+    border: 1px solid #cf3721 !important;
+    text-transform: uppercase;
 }
 
 @media (min-width: 500px) {
@@ -19,8 +27,11 @@
         align-items: center;
     }
 
-    .Button {
+    .ButtonLink {
         margin-left: 50px;
-        padding: .375rem 1.2rem !important;
+    }
+
+    .Button {
+        padding: .5rem 2.5rem !important;
     }
 }

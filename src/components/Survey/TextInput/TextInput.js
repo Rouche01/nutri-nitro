@@ -5,11 +5,11 @@ import { FormControl } from 'react-bootstrap';
 import styles from './TextInput.module.css';
 
 const textInput = React.forwardRef((props, ref) => (
-    <InputGroup size="lg" className={styles.TextInput} >
-        <FormControl ref={ref} type="number" onChange={props.changed} className={styles.Input} />
-        <InputGroup.Append>
+    <InputGroup size="lg" className={styles.TextInput} style={{width: props.width}}>
+        <FormControl ref={ref} type={props.type} onChange={props.changed} className={styles.Input} />
+        { props.unit ? <InputGroup.Append>
             <InputGroup.Text>{props.unit}</InputGroup.Text>
-        </InputGroup.Append>
+        </InputGroup.Append> : null }
     </InputGroup>
 ));
 

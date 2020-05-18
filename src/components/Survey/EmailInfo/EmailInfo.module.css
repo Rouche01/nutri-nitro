@@ -1,0 +1,19 @@
+.EmailInfo {
+    text-align: center;
+    margin-top: -40px;
+}
+
+.Links a {
+    font-size: .9rem;
+    color: #595959;
+}
+
+.Links a:hover {
+    color: #595959;
+}
+
+.Links {
+    margin-top: 20px;
+    color: #595959;
+    margin-bottom: 0px;
+}

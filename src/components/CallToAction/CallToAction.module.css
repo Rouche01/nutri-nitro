@@ -27,6 +27,10 @@
     margin-top: 10px;
 }
 
+.CtaButtons a {
+    text-decoration: none !important;
+}
+
 .CtaIcon {
     width: 80%;
 }

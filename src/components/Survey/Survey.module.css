@@ -1,19 +1,38 @@
 .Survey {
-    position: fixed;
+    /* position: fixed; */
     background-color: #fff;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
     z-index: 300;
     text-align: center;
+    padding-bottom: 40px;
+}
+
+.Survey a {
+    color: #CACACA !important;
 }
 
 .CloseButton {
-    position: fixed;
+    position: absolute;
     top: 20px;
-    right: 20px;
+    right: 5%;
     border: none;
     background-color: rgba(255, 255, 255, 0);
     color: #CACACA;
+}
+
+.PrevButton {
+    position: absolute;
+    top: 20px;
+    left: 5%;
+    font-size: 1.2rem;
+    border: none;
+    background-color: rgba(255, 255, 255, 0);
+    color: rgba(207, 55, 33, 0.8);
+}
+
+.PrevButton:focus {
+    outline: none;
 }

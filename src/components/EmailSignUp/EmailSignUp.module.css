@@ -2,9 +2,17 @@
     margin-top: -10px;
     margin-bottom: 40px;
     padding: 30px 20px;
-    background-color: #E9E7E6;
+    background-color: rgb(192, 192, 192);
     /* border-radius: 8px; */
     text-align: center;
+}
+
+.subscribeBtn {
+    background-color: #cf3721 !important;
+}
+
+.SubscribeForm {
+    margin-top: 15px;
 }
 
 @media (min-width: 500px) {
@@ -12,7 +20,7 @@
         margin-top: 10px;
         margin-bottom: 40px;
         padding: 50px 40px;
-        background-color: #E9E7E6;
+        background-color: rgb(192, 192, 192);
         border-radius: 8px;
         text-align: left;
         

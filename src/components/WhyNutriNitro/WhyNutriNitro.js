@@ -3,7 +3,10 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import WhyCols from './WhyCols/WhyCols';
-import { faCloudMeatball, faPepperHot, faDrumstickBite, faSeedling} from '@fortawesome/free-solid-svg-icons';
+import food from '../../assets/food-freedom.svg';
+import lifestyle from '../../assets/lifestyle.svg';
+import weightLoss from '../../assets/weight-loss.svg';
+import wallet from '../../assets/wallet.svg';
 
 import styles from './WhyNutriNitro.module.css';
 
@@ -12,23 +15,23 @@ const whyNutriNitro = (props) => (
         <Container className={styles.Container}>
             <Row>
                 <Col sm>
-                    <WhyCols fontIcon={faCloudMeatball} title="No commitment whatsoever">
-                        Skipping weeks or cancelling is super easy.
+                    <WhyCols icon={food} title="You eat what you like">
+                        No such thing as bad foods. With NutriNitro, you will learn to eat what you like in a smart way!
                     </WhyCols>
                 </Col>
                 <Col sm>
-                    <WhyCols fontIcon={faPepperHot} title="Reliable and affordable ">
-                        Our huge recipe selection wows week after week.
+                    <WhyCols icon={lifestyle} title="Fit for any lifestyle">
+                        No cause for worries, our plans are designed to fit into your lifestyle perfectly.
                     </WhyCols>
                 </Col>
                 <Col sm>
-                    <WhyCols fontIcon={faDrumstickBite} title="No skimpin’ on the chicken!">
-                        With step-by-step instructions so you never miss a beat.
+                    <WhyCols icon={weightLoss} title="Permanent weight loss">
+                        We prevent regaining of lost weight by helping you loose extra weight gradually.
                     </WhyCols>
                 </Col>
                 <Col sm>
-                    <WhyCols fontIcon={faSeedling} title="Vetted by nutritionist">
-                        So no morsels or dollops go to waste lorem ipsum lorem.
+                    <WhyCols icon={wallet} title="Save your money">
+                        We help you save money by regulating your portion sizes & serving sizes. You don't have to buy as many groceries.
                     </WhyCols>
                 </Col>
             </Row>

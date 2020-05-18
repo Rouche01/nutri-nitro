@@ -6,7 +6,10 @@
 
 @media (min-width: 500px) {
     .Question {
+        margin: 0 auto;
         margin-top: 120px;
+        margin-bottom: 40px;
         font-size: 1.5rem;
+        width: 550px;
     }
 }

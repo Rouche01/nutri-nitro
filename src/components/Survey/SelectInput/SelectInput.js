@@ -1,21 +1,20 @@
 import React from 'react';
 
-import Wrapper from '../../../hoc/Wrapper/Wrapper';
 import styles from './SelectInput.module.css';
 
-const selectInput = (props) => (
-    <Wrapper>
+const selectInput = React.forwardRef((props, ref) => (
+    <div ref={ref}>
         {props.options.map((option, idx) => {
             return (
-                <Wrapper key={idx}>
-                    <input className={styles.SelectInput} type="radio" name="gender" id={option} />
+                <div key={option} className={option}>
+                    <input className={styles.SelectInput} onClick={e => props.changed(e)} type="radio" value={option} name={props.name} id={option} />
                     <label htmlFor={option}>
                         {option}
                     </label>
-                </Wrapper>
+                </div>
             )
         })}
-    </Wrapper>
-) 
+    </div>
+));
 
 export default selectInput;

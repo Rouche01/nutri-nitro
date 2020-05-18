@@ -1,9 +1,13 @@
 .TextInput {
-    width: 170px !important;
+    /* width: 170px !important; */
     margin: auto;
     margin-top: 30px;
 }
 
 .Input {
     text-align: center;
+}
+
+.form-control:focus, .Input:active {
+    outline: none !important;
 }

@@ -1,5 +1,5 @@
 .Banner {
-    min-height: 200px;
+    min-height: 280px;
     position: relative;
     background: url(../../assets/fruits.jpg);
     background-repeat: no-repeat;
@@ -20,9 +20,22 @@
     padding-top: 1.8rem;
 }
 
+.ctaButton {
+    background-color: #cf3721 !important;
+    border: 1px solid #cf3721 !important;
+    margin-top: 15px;
+    padding: .5rem 1.5rem !important;
+}
+
 
 @media (min-width: 500px) {
     .DarkOverlay {
         padding-top: 3.2rem;
+    }
+
+    .ctaButton {
+        margin-top: 20px;
+        padding: .75rem 2.5rem !important;
+        font-size: 1.1rem;
     }
 }

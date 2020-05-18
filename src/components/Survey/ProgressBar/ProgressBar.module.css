@@ -26,6 +26,8 @@
     background-color: #CACACA;
     border-radius: 50%;
     margin: 0 auto 5px auto;
+    position: relative;
+    z-index: 3;
 }
 
 .ProgressBar li:after {
@@ -36,7 +38,7 @@
     position: absolute;
     left: -50%;
     top: 9px;
-    z-index: -1;
+    z-index: 1;
 }
 
 .ProgressBar li:first-child:after {
@@ -44,11 +46,11 @@
 }
 
 .ProgressBar li.active {
-    color: red;
+    color: #cf3721;
 }
 
 .ProgressBar li.active:before,  .ProgressBar li.active:after{
-	background-color: red;
+	background-color: #cf3721;
 	color: white;
 }
 

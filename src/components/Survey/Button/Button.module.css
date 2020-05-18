@@ -6,12 +6,13 @@
     width: 120px;
     display: inline-block !important;
     font-size: 1.1rem !important;
+    border: none !important;
     /* margin-left: 20px; */
 }
 
 @media (min-width: 500px) {
     .Button {
-        margin: 120px 15px 0px 15px;
+        margin: 100px 15px 0px 15px;
         padding-top: .8rem !important;
         padding-bottom: .8rem !important;
         width: 170px;

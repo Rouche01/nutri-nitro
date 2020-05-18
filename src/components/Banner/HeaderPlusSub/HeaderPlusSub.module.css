@@ -1,0 +1,11 @@
+.HeaderPlusSub p {
+    font-size: 1rem;
+    margin: 0 auto;
+}
+
+
+@media (min-width: 500px) {
+    .HeaderPlusSub p {
+        font-size: 1.1rem;
+    }
+}
