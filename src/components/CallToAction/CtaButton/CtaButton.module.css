@@ -10,9 +10,10 @@
 
 
 .Button {
-    height: 75px;
-    width: 75px;
+    height: 85px;
+    width: 85px;
     border-radius: 50%;
+    background-color: #fff;
     border: 1px solid rgba(255, 255, 255, 0);
     box-shadow: 1px 4px 4px rgba(0, 0, 0, .5);
     position: relative;

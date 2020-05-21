@@ -2,6 +2,7 @@
     display: inline-block;
     cursor: pointer;
     box-sizing: border-box;
+    z-index: 300;
 }
 
 .Bar1, .Bar2, .Bar3 {
@@ -13,15 +14,19 @@
 }
 
 .Change .Bar1 {
-    -webkit-transform: rotate(-45deg) translate(-9px, 6px);
-    transform: rotate(-45deg) translate(-9px, 6px);
+    -webkit-transform: rotate(-45deg) translateY(-6px, 6px);
+    -moz-transform: rotate(-45deg) translate(-6px, 6px);
+    -ms-transform: rotate(-45deg) translate(-6px, 6px);
+    transform: translate(-8px, 8px) rotate(-45deg);
 }
   
 .Change .Bar2 {opacity: 0;}
   
 .Change .Bar3 {
 -webkit-transform: rotate(45deg) translate(-8px, -8px);
-transform: rotate(45deg) translate(-8px, -8px);
+-moz-transform: rotate(45deg) translate(-8px, -8px);
+-ms-transform: rotate(45deg) translate(-8px, -8px);
+transform: translate(-8px, -12px) rotate(45deg);
 }
 
 @media (min-width: 500px) {

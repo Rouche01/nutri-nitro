@@ -43,11 +43,11 @@ const surveyQuestions = [
         section: 'demography'
     },
     {
-        question: 'What is your main reason for wanting to lose weight?',
+        question: 'What is your main reason for wanting to get fit?',
         dataKey: 'Motivational goal',
         answerType: 'SelectInput',
         answerOptions: [
-            'Improve physical appearance', 'Engage more with family', 'Become healthier', 'Feel better day-to-day', 'Other'
+            'Improve physical appearance', 'Engage more with family', 'Become healthier', 'Feel better day-to-day', 'Others'
         ],
         answerUnit: null,
         section: 'demography'
@@ -58,8 +58,11 @@ const surveyQuestions = [
         answerType: 'SelectInput',
         answerOptions: [
             'I am only focused on losing weight',
+            "I want to stop looking skinny, so I want to gain some weight",
             "I'd like to gain some muscle while I lose fat",
-            'Gaining muscle is more important to me than losing fat'
+            'Gaining muscle is more important to me than losing fat',
+            'I want to gain enough weight to partcipate in some activities e.g games, sports',
+            'I want to gain the right amount of weight that is healthy for me'
         ],
         answerUnit: null,
         section: 'demography'

@@ -17,9 +17,6 @@ const callToAction = (props) => (
                     <img src={fitIcon} alt="Get Fit For Good" className={styles.CtaIcon} />
                 </CtaButton>
             </Link>
-            <CtaButton ctaText="Lose Weight For Good">
-                <img src={fitIcon} alt="Get Fit For Good" className={styles.CtaIcon} />
-            </CtaButton>
         </div>
     </Wrapper>
 );

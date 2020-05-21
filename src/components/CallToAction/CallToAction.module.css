@@ -1,5 +1,5 @@
 .CallToAction {
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .BounceIcon {
@@ -9,22 +9,13 @@
     margin: 0 auto;
     margin-top: 40px;
     animation: bounce 2s infinite;
-    -webkit-animation: bounce 2s infinite;
-}
-
-.Button {
-    /* width: 300px !important; */
-    margin-left: 10px;
+    /* -webkit-animation: bounce 2s infinite; */
 }
 
 .CtaButtons {
     text-align: center;
-    display: flex;
-    flex-flow: row;
-    justify-content: space-around;
-    width: 350px;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .CtaButtons a {
@@ -32,7 +23,7 @@
 }
 
 .CtaIcon {
-    width: 80%;
+    width: 90%;
 }
 
 @keyframes bounce {
@@ -52,7 +43,6 @@
 
 @media (min-width: 500px) {
     .CtaButtons {
-        width: 600px;
         margin: 0 auto;
         margin-top: 30px;
     }

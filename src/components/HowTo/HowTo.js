@@ -40,7 +40,7 @@ class HowTo extends Component {
                     <HowToCard title="Create an account" step="3" index={3}>In the middle of the survey you will be required to create an account with your email</HowToCard>
                     <HowToCard title="Complete Survey" step="4" index={4}>Finish up the rest of the survey questions to create a customized meal plan for yourself</HowToCard>
                     <HowToCard title="Make your payment" step="5" index={5}>You can now make payment for your customized meal plan, made to fit your lifestyle perfectly </HowToCard>
-                    <HowToCard title="Your meal plan in your inbox" step="6" index={6}>Some quick example text to build on the card title and make up the bulk of the card's content.</HowToCard>
+                    <HowToCard title="Your meal plan in your inbox" step="6" index={6}>After successful payment, you will receive access to your personalized meal plan & follow-ups, via your email.</HowToCard>
                 </Slider>
             </Container>
         )
