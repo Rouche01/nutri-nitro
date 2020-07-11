@@ -8,6 +8,7 @@
     text-align: center;
 }
 
-.form-control:focus, .Input:active {
-    outline: none !important;
+.form-control:focus, .Input:focus {
+    box-shadow: none !important;
+    border: 1px solid #cf3721 !important;
 }

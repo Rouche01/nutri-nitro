@@ -1,0 +1,66 @@
+.PredictWeightStatus {
+    margin-top: 100px;
+    padding: 0 20px;
+    text-align: center;
+    padding-bottom: 40px;
+}
+
+.PredictWeightStatus h4 {
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.PredictWeightStatus h2 {
+    font-size: 32px;
+    color: #cf3721;
+}
+
+.PredictWeightStatus hr {
+    margin-top: 40px;
+}
+
+.PredictWeightStatus a {
+    color: rgba(0, 0, 0, 0.7);
+    text-decoration: underline;
+}
+
+.PredictWeightStatus a:hover {
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.Terms {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.ExtraInfo {
+    margin-top: 40px;
+}
+
+.ExtraInfo p {
+    font-size: 1.1rem;
+}
+
+
+@media screen and (min-width: 500px) {
+    .PredictWeightStatus {
+        width: 550px;
+        margin: 80px auto 0px;
+    }
+
+    .PredictWeightStatus h4 {
+        font-size: 24px;
+    }
+
+    .PredictWeightStatus h2 {
+        font-size: 48px;
+    }
+
+    .Terms {
+        font-size: 16px;
+    }
+
+    .ExtraInfo p {
+        font-size: 1.2rem;
+    }
+}

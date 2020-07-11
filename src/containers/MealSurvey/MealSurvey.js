@@ -11,7 +11,7 @@ class MealSurvey extends Component {
                 <div className={styles.Overlay}>
                     <div className="container">
                         <h1 className="display-4 mx-auto text-center">Stay Happy & Confident with Good Health, Great Body & Sound Mind</h1>
-                        <CallToAction linkTo="/start-survey"/>
+                        <CallToAction linkTo="/survey"/>
                     </div>
                 </div>
             </div>

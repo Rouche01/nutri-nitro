@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as actionTypes from '../../store/actions';
 
 import styles from './Survey.module.css';
 import Question from './Question/Question';
@@ -10,48 +12,110 @@ import TextInput from './TextInput/TextInput';
 import Button from './Button/Button';
 import SelectInput from './SelectInput/SelectInput';
 import Wrapper from '../../hoc/Wrapper/Wrapper';
-import surveyQuestions from '../../questions/SurveyQuestions';
+import { surveyQuestions, surveySection } from '../../questions/SurveyQuestions';
 import ExtraInfo from '../ExtraInfo/ExtraInfo';
 
 class Survey extends Component {
     state = {
             nextButtonDisabled: true,
-            counter: 0,
-            questionId: 1,
-            question: '',
-            answerType: '',
-            answerOptions: [],
-            answerUnit: '',
-            demographyCount: 0,
-            answers: []
-        }
+            sectionCount: null,
+    }
+
     textInputRef = React.createRef();
     selectInputRef = React.createRef();
 
     componentDidMount() {
-        let demographyCount;
-        for(let i = 0; i < surveyQuestions.length; i++) {
-            if(surveyQuestions[i].section === 'demography') {
-                if(!demographyCount) {
-                    demographyCount = 1;
-                } else {
-                    demographyCount = demographyCount + 1
-                }
+        console.log(surveySection);
+
+        if(surveyQuestions[this.placeholderForSection][this.props.count].answerType === 'TextInput') {
+            this.textInputRef.current.focus();
+        }
+
+        let sectionCount;
+        for(let i = 0; i < surveyQuestions[surveySection[this.props.sectionCounter]].length; i++) {
+            if(!sectionCount) {
+                sectionCount = 1;
+            } else {
+                sectionCount = sectionCount + 1
             }
         }
 
-
         this.setState({
-            question: surveyQuestions[0].question,
-            answerType: surveyQuestions[0].answerType,
-            answerOptions: [...surveyQuestions[0].answerOptions],
-            answerUnit: surveyQuestions[0].answerUnit,
-            demographyCount: demographyCount
+            sectionCount: sectionCount
         })
+
+        let checker = this.props.answers[this.placeholderForSection].findIndex(answer => answer.id === this.props.questionId);
+        if(checker >= 0) {
+            // if it has an answer, set the input value to that answer & enable the next button
+            if(surveyQuestions[this.placeholderForSection][this.props.count].answerType === 'TextInput') {
+                this.textInputRef.current.value = this.props.answers[this.placeholderForSection][this.props.count].answer;
+            } else if(surveyQuestions[this.placeholderForSection][this.props.count].answerType === 'SelectInput') {
+                const selOptions = this.selectInputRef.current.children;
+                for(let i = 0; i < selOptions.length; i++) {
+                    if (selOptions[i].classList.value === this.props.answers[this.placeholderForSection][this.props.count].answer) {
+                        selOptions[i].children[0].checked = true
+                    }
+                }
+            }
+            this.setState({
+                nextButtonDisabled: false
+            })
+        } else {
+            // if it does not have an answer, leave the input value empty and disable the next button
+            if(surveyQuestions[this.placeholderForSection][this.props.count].answerType === 'TextInput') {
+                this.textInputRef.current.value = '';
+                this.setState ({
+                    nextButtonDisabled: true
+                });
+            } else if (surveyQuestions[this.placeholderForSection][this.props.count].answerType === 'SelectInput') {
+                console.log(this.selectInputRef.current);
+            }
+        }
     }
 
-    componentDidUpdate() {
-        console.log(this.state.nextButtonDisabled);
+    placeholderForSection = surveySection[this.props.sectionCounter];
+
+    componentDidUpdate(prevProps, prevState) {
+        // console.log(this.state.nextButtonDisabled);
+
+        // console.log(this.props.count, 'did' );
+
+        if(prevProps.sectionCounter !== this.props.sectionCounter) {
+            this.placeholderForSection = surveySection[this.props.sectionCounter];
+        }
+
+        if(prevProps.inputVal !== this.props.inputVal || prevProps.count !== this.props.count) {
+
+            let checker = this.props.answers[this.placeholderForSection].findIndex(answer => answer.id === this.props.questionId);
+            if(checker >= 0) {
+                // if it has an answer, set the input value to that answer & enable the next button
+                if(surveyQuestions[this.placeholderForSection][this.props.count].answerType === 'TextInput') {
+                    this.textInputRef.current.focus();
+                    this.textInputRef.current.value = this.props.answers[this.placeholderForSection][this.props.count].answer;
+                } else if(surveyQuestions[this.placeholderForSection][this.props.count].answerType === 'SelectInput') {
+                    const selOptions = this.selectInputRef.current.children;
+                    for(let i = 0; i < selOptions.length; i++) {
+                        if (selOptions[i].classList.value === this.props.answers[this.placeholderForSection][this.props.count].answer) {
+                            selOptions[i].children[0].checked = true
+                        }
+                    }
+                }
+                this.setState({
+                    nextButtonDisabled: false
+                })
+            } else {
+                // if it does not have an answer, leave the input value empty and disable the next button
+                if(surveyQuestions[this.placeholderForSection][this.props.count].answerType === 'TextInput') {
+                    this.textInputRef.current.focus();
+                    this.textInputRef.current.value = '';
+                    this.setState ({
+                        nextButtonDisabled: true
+                    });
+                } else if (surveyQuestions[this.placeholderForSection][this.props.count].answerType === 'SelectInput') {
+                    console.log(this.selectInputRef.current);
+                }
+            }
+        }
     }
 
     checkInputState = () => {
@@ -66,204 +130,80 @@ class Survey extends Component {
         }
     }
 
-    // this happens when a next button is clicked for text input or when an option is selected for select input
-    // takes in e - an event in the case of select input
-    onAnswerSubmit = () => {
-        // checks if the answer for the question already exist
-        if(!this.state.answers.some(answer => answer.id === this.state.questionId)) {
-           // if it does not exist, we create a new answer
-           let newAnswer;
-           const answersCopy = [...this.state.answers];
-           // creates new answer for text-input type answer
-            newAnswer = {
-                dataKey: surveyQuestions[this.state.counter].dataKey,
-                id: this.state.questionId,
-                answer: this.textInputRef.current.value
-            }
-
-           // insert the new answer into the answers array and then set the answers state
-            answersCopy.push(newAnswer);
-            console.log(answersCopy)
-            this.setState({
-                answers: answersCopy,
-            });
-
-            // do this if the answer for the question already exist and there is a new answer 
-        } else if (this.state.answers.some(answer => answer.id === this.state.questionId) 
-        && this.state.answers[this.state.counter].answer !== this.textInputRef.current.value) {
-            console.log('Different value');
-            const answersChanged = [...this.state.answers];
-
-            // assign the new value for the answer to that question and 
-            answersChanged[this.state.counter].answer = this.textInputRef.current.value;
-            console.log(answersChanged);
-            this.setState({
-                answers: answersChanged,
-            })
-        }
-        // moving to the next question
-        this.moveToNextQuestion();
+    onAnswerChoose = () => {
+        this.props.onAnswerSubmit(this.textInputRef.current.value);
     }
 
-    onAnswerSelect = (e) => {
-        // checks if the answer for the question already exist
-
-        if(!this.state.answers.some(answer => answer.id === this.state.questionId)) {
-            // if it does not exist, we create a new answer
-            let newAnswer;
-            const answersCopy = [...this.state.answers];
-            newAnswer = {
-                dataKey: surveyQuestions[this.state.counter].dataKey,
-                id: this.state.questionId,
-                answer: e.target.value
-            }
-            answersCopy.push(newAnswer);
-            console.log(answersCopy)
-            this.setState({
-                answers: answersCopy,
-            });
-            // removing the checked attribute from the previously selected option in select-input
-            console.log(e.target);
-            e.target.checked = false
-        } else if (this.state.answers.some(answer => answer.id === this.state.questionId) 
-            && this.state.answers[this.state.counter].answer !== e.target.value) {
-            console.log(e.target.value);
-            const answersChanged = [...this.state.answers];
-
-            // assign the new value for the answer to that question and 
-            answersChanged[this.state.counter].answer = e.target.value;
-            console.log(answersChanged);
-            this.setState({
-                answers: answersChanged,
-            })
-        }
-        // moving to the next question
-        this.moveToNextQuestion();
-    }
-
-    moveToNextQuestion = () => {
-        // increment the counter and the question ID to move to the next question
-        const counter = this.state.counter + 1;
-        const questionId = this.state.questionId + 1;
-
-        if(counter !== this.state.demographyCount) {
-            // use the incremented counter to set a new state for the new question
-            this.setState({
-                counter: counter,
-                questionId: questionId,
-                question: surveyQuestions[counter].question,
-                answerType: surveyQuestions[counter].answerType,
-                answerOptions: [...surveyQuestions[counter].answerOptions],
-                answerUnit: surveyQuestions[counter].answerUnit,
-            }, () => {
-                // console.log(this.state);
-                // check if the next question already has an answer
-                let checker = this.state.answers.findIndex(answer => answer.id === this.state.questionId);
-                if(checker >= 0) {
-                    console.log(this.state.answers.findIndex(answer => answer.id === this.state.questionId))
-                    // if it has an answer, set the input value to that answer & enable the next button
-                    if(this.state.answerType === 'TextInput') {
-                        this.textInputRef.current.value = this.state.answers[counter].answer;
-                    } else if(this.state.answerType === 'SelectInput') {
-                        const selOptions = this.selectInputRef.current.children;
-                        for(let i = 0; i < selOptions.length; i++) {
-                            if (selOptions[i].classList.value === this.state.answers[counter].answer) {
-                                selOptions[i].children[0].checked = true
-                            }
-                        }
-                    }
-                    this.setState({
-                        nextButtonDisabled: false
-                    })
-                } else {
-                    // if it does not have an answer, leave the input value empty and disable the next button
-                    if(this.state.answerType === 'TextInput') {
-                        this.textInputRef.current.value = '';
-                        this.setState ({
-                            nextButtonDisabled: true
-                        });
-                    } else if (this.state.answerType === 'SelectInput') {
-                        console.log(this.selectInputRef.current);
-                    }
-                }
-            })
-        } else if (counter === this.state.demographyCount) {
-            // console.log(this.props);
-            this.props.history.push({pathname: '/survey/email', state: {
-                counter: this.state.counter,
-                questionId: this.state.questionId,
-                answers: [...this.state.answers]
-            }});
-            console.log(this.props);
+    onAnswerSelected = (e) => {
+        console.log(this.props.count);
+        if(this.props.count === (this.state.sectionCount - 1)) {
+            console.log('working');
+            this.props.onAnswerSelect(e.target.value);
+            this.props.history.push({pathname: '/survey/email'});
+        } else {
+            this.props.onAnswerSelect(e.target.value);  
         }
     }
 
-    // this is to go back to the previous questions
-    toPrevQuestion = () => {
-        // decrement the counter and the question id
-        const counter = this.state.counter - 1;
-        const questionId = this.state.questionId - 1;
 
-        // use this counter and question id to set the state for the question & enable the next button
-        this.setState ({
-            counter: counter,
-            questionId: questionId,
-            question: surveyQuestions[counter].question,
-            answerType: surveyQuestions[counter].answerType,
-            answerOptions: [...surveyQuestions[counter].answerOptions],
-            answerUnit: surveyQuestions[counter].answerUnit,
-            nextButtonDisabled: false
-        }, () => {
-            // setting answer for the question by looking into the answers state
-            if(this.state.answerType === 'TextInput') {
-                this.textInputRef.current.value = this.state.answers[counter].answer;
-            } else if (this.state.answerType === 'SelectInput') {
-                const selOptions = this.selectInputRef.current.children;
-                console.log(selOptions);
-                for(let i = 0; i < selOptions.length; i++) {
-                    if (selOptions[i].classList.value === this.state.answers[counter].answer) {
-                        console.log(selOptions[i].children[0]);
-                        selOptions[i].children[0].checked = true
-                    }
-                }
-            }
-        })
-        
+    handleEnterPressed = (e) => {
+        if(e.key === 'Enter') {
+            this.props.onAnswerSubmit(this.textInputRef.current.value);
+        }
     }
 
-
-    // test = (e) => {
-    //     console.log(e.target.value);
-    // }
 
     render() {
+        
         return (
             <div className={styles.Survey}>
                 <button className={styles.CloseButton}>
                     <Link to="/"><FontAwesomeIcon icon={faTimes} className="fa-2x" /></Link>
                 </button>
-                { this.state.questionId > 1 ? <button className={styles.PrevButton} 
-                    onClick={this.toPrevQuestion}>
+                { this.props.questionId > 1 ? <button className={styles.PrevButton} 
+                    onClick={this.props.onPreviousClick}>
                     <FontAwesomeIcon icon={faAngleDoubleLeft} style={{marginRight: '8px'}} />
                     Previous
                 </button> : null }
                 <ProgressBar />
                 <Question className={styles.QuestionStyle}>
-                    {this.state.question}
+                    {surveyQuestions[this.placeholderForSection][this.props.count].question}
                 </Question>
-                {this.state.answerType === "TextInput" ? 
+                {surveyQuestions[this.placeholderForSection][this.props.count].answerType === "TextInput" ? 
                     // the question renders a text input when the question requires a text input
                     <Wrapper>
-                        <TextInput ref={this.textInputRef} changed={this.checkInputState} type='number' unit={this.state.answerUnit} width='170px' /> 
-                        {/* { this.state.questionId > 1 ? <Button action="Previous" clicked={this.toPrevQuestion} /> : null } */}
-                        <Button action="Next" bgColor='#cf3721' disabled={this.state.nextButtonDisabled} clicked={this.onAnswerSubmit} />
+                        <TextInput ref={this.textInputRef} changed={this.checkInputState} type='number' 
+                        unit={surveyQuestions[this.placeholderForSection][this.props.count].answerUnit} width='170px' enterPressed={(e) => this.handleEnterPressed(e)} /> 
+                        <Button action="Next" bgColor='#cf3721' disabled={this.state.nextButtonDisabled} 
+                        clicked={() => this.onAnswerChoose()} />
                     </Wrapper>: 
                     // the question renders a radio button options when the question requires this type of answer
-                    <SelectInput ref={this.selectInputRef} options={this.state.answerOptions} name={surveyQuestions[this.state.counter].dataKey} changed={this.onAnswerSelect} /> }
-                {surveyQuestions[this.state.counter].extra ? <ExtraInfo>{surveyQuestions[this.state.counter].extra}</ExtraInfo> : null}
+                    <SelectInput ref={this.selectInputRef} 
+                    options={surveyQuestions[this.placeholderForSection][this.props.count].answerOptions} 
+                    name={surveyQuestions[this.placeholderForSection][this.props.count].dataKey} changed={(e) => this.onAnswerSelected(e) } /> }
+                {surveyQuestions[this.placeholderForSection][this.props.count].extra ? <ExtraInfo>{surveyQuestions[this.placeholderForSection][this.props.count].extra}</ExtraInfo> : null}
             </div>
         )
     }
 }
 
-export default Survey;
+const mapStateToProps = state => {
+    return {
+        count: state.counter,
+        questionId: state.questionId,
+        sectionCounter: state.sectionCounter,
+        answers: state.answers,
+        inputVal: state.inputVal,
+        userInfo: state.userInfo
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAnswerSubmit: (textVal) => dispatch({type: actionTypes.ANSWER_SURVEY, inputValue: textVal}),
+        onPreviousClick: () => dispatch({type: actionTypes.PREVIOUS_QUESTION}),
+        onAnswerSelect: (selectVal) => dispatch({type: actionTypes.SELECT_SURVEY, selectedValue: selectVal})
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Survey);
