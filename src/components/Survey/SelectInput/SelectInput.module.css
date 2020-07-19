@@ -10,7 +10,6 @@
     width: 300px;
     font-size: 18px;
     line-height: 22px;
-    letter-spacing: 1px;
     margin: 0 auto;
     margin-left: 15px;
     margin-right: 15px;
@@ -21,7 +20,7 @@
     cursor: pointer;
 }
 
-.SelectInput + label {
+.SelectInput label {
     margin: 10px auto 10px auto;
 }
 

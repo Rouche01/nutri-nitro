@@ -10,7 +10,7 @@ const initialState = {
         demography: [],
         eatingHabits: []
     },
-    inputVal: '',
+    inputVal: null,
     userInfo: {
         email: '',
     }
@@ -66,6 +66,22 @@ const reducer = (state = initialState, action) => {
                 }
             }
             return newState;
+        case actionTypes.SUBMIT_ANSWERS_CHECKED:
+            let newAnswer = {
+                dataKey: surveyQuestions[surveySection[state.sectionCounter]][state.counter].dataKey,
+                id: state.questionId,
+                answer: action.checkedValues
+           }
+            return {
+                ...state,
+                counter: state.counter + 1,
+                questionId: state.questionId + 1,
+                answers: {
+                    ...state.answers,
+                    [surveySection[state.sectionCounter]]: state.answers[surveySection[state.sectionCounter]].concat(newAnswer)
+                },
+                inputVal: action.checkedValues,
+            }
         case actionTypes.PREVIOUS_QUESTION:
             return {
                 ...state,
@@ -126,7 +142,7 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 counter: 0,
-                questionId: 1
+                questionId: 1,
             }
         case actionTypes.NEXT_BREAK:
             return {
@@ -145,6 +161,13 @@ const reducer = (state = initialState, action) => {
                     ...state.userInfo,
                     email: action.userEmail
                 }
+            }
+        case actionTypes.BROWSER_PREVIOUS_SECTION:
+            return {
+                ...state,
+                counter: 0,
+                questionId: 1,
+                sectionCounter: state.sectionCounter - 1
             }
         default:
             return state;

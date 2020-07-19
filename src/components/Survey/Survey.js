@@ -14,18 +14,20 @@ import SelectInput from './SelectInput/SelectInput';
 import Wrapper from '../../hoc/Wrapper/Wrapper';
 import { surveyQuestions, surveySection } from '../../questions/SurveyQuestions';
 import ExtraInfo from '../ExtraInfo/ExtraInfo';
+import CheckboxInput from './CheckboxInput/CheckboxInput';
 
 class Survey extends Component {
     state = {
             nextButtonDisabled: true,
             sectionCount: null,
+            checkedValues: []
     }
 
     textInputRef = React.createRef();
     selectInputRef = React.createRef();
+    checkboxInputRef = React.createRef();
 
     componentDidMount() {
-        console.log(surveySection);
 
         if(surveyQuestions[this.placeholderForSection][this.props.count].answerType === 'TextInput') {
             this.textInputRef.current.focus();
@@ -84,6 +86,12 @@ class Survey extends Component {
             this.placeholderForSection = surveySection[this.props.sectionCounter];
         }
 
+        // if(prevProps.count !== this.props.count) {
+        //     this.setState({
+        //         checkedValues: []
+        //     })
+        // }
+
         if(prevProps.inputVal !== this.props.inputVal || prevProps.count !== this.props.count) {
 
             let checker = this.props.answers[this.placeholderForSection].findIndex(answer => answer.id === this.props.questionId);
@@ -97,6 +105,16 @@ class Survey extends Component {
                     for(let i = 0; i < selOptions.length; i++) {
                         if (selOptions[i].classList.value === this.props.answers[this.placeholderForSection][this.props.count].answer) {
                             selOptions[i].children[0].checked = true
+                        }
+                    }
+                } else if (surveyQuestions[this.placeholderForSection][this.props.count].answerType === 'CheckBox') {
+                    const checkOptions = this.checkboxInputRef.current.children;
+                    const savedAns = this.props.answers[this.placeholderForSection][this.props.count].answer;
+                    for(let i = 0; i < checkOptions.length; i ++) {
+                        for(let j = 0; j < savedAns.length; j++) {
+                            if(checkOptions[i].classList.value.split(' ')[1] === savedAns[j].split(' ')[0]) {
+                                checkOptions[i].children[0].checked = true;
+                            }
                         }
                     }
                 }
@@ -134,6 +152,36 @@ class Survey extends Component {
         this.props.onAnswerSubmit(this.textInputRef.current.value);
     }
 
+    onAnswerChecked = (e) => {
+        if(!this.state.checkedValues.includes(e.target.value)) {
+            console.log(this.state.checkedValues.includes(e.target.value));
+            this.setState({
+                checkedValues: [...this.state.checkedValues, e.target.value],
+                nextButtonDisabled: false
+            }, () => {
+                console.log(this.state.checkedValues);
+            })
+        } else {
+            const copyCheckedValues = [...this.state.checkedValues];
+            const duplicateIdx = copyCheckedValues.findIndex(val => val === e.target.value);
+            copyCheckedValues.splice(duplicateIdx, 1);
+            this.setState({
+                checkedValues: copyCheckedValues
+            }, () => {
+                if(this.state.checkedValues.length < 1 ) {
+                    this.setState({
+                        nextButtonDisabled: true
+                    })
+                }
+                console.log(this.state.checkedValues);
+            })
+        }
+    }
+
+    onCheckdValsSubmit = () => {
+        this.props.onCheckedAnswersSubmitted(this.state.checkedValues);
+    }
+
     onAnswerSelected = (e) => {
         console.log(this.props.count);
         if(this.props.count === (this.state.sectionCount - 1)) {
@@ -149,6 +197,36 @@ class Survey extends Component {
     handleEnterPressed = (e) => {
         if(e.key === 'Enter') {
             this.props.onAnswerSubmit(this.textInputRef.current.value);
+        }
+    }
+
+    resolveQuestionOption = () => {
+        if(surveyQuestions[this.placeholderForSection][this.props.count].answerType === "TextInput") {
+            return (
+                <Wrapper>
+                        <TextInput ref={this.textInputRef} changed={this.checkInputState} type='number' 
+                        unit={surveyQuestions[this.placeholderForSection][this.props.count].answerUnit} width='170px' enterPressed={(e) => this.handleEnterPressed(e)} /> 
+                        <Button action="Next" bgColor='#cf3721' disabled={this.state.nextButtonDisabled} 
+                        clicked={() => this.onAnswerChoose()} />
+                </Wrapper>
+            )
+        } else if(surveyQuestions[this.placeholderForSection][this.props.count].answerType === "SelectInput") {
+            return (
+                <SelectInput ref={this.selectInputRef} 
+                    options={surveyQuestions[this.placeholderForSection][this.props.count].answerOptions} 
+                    name={surveyQuestions[this.placeholderForSection][this.props.count].dataKey} changed={(e) => this.onAnswerSelected(e) } />
+            )
+        } else {
+            return (
+                <React.Fragment>
+                    <CheckboxInput ref={this.checkboxInputRef}
+                    options={surveyQuestions[this.placeholderForSection][this.props.count].answerOptions} 
+                    name={surveyQuestions[this.placeholderForSection][this.props.count].dataKey} 
+                    answersChecked={this.onAnswerChecked} />
+                    <Button action="Next" bgColor='#cf3721' disabled={this.state.nextButtonDisabled} 
+                    clicked={() => this.onCheckdValsSubmit()} />
+                </React.Fragment>
+            )
         }
     }
 
@@ -169,18 +247,7 @@ class Survey extends Component {
                 <Question className={styles.QuestionStyle}>
                     {surveyQuestions[this.placeholderForSection][this.props.count].question}
                 </Question>
-                {surveyQuestions[this.placeholderForSection][this.props.count].answerType === "TextInput" ? 
-                    // the question renders a text input when the question requires a text input
-                    <Wrapper>
-                        <TextInput ref={this.textInputRef} changed={this.checkInputState} type='number' 
-                        unit={surveyQuestions[this.placeholderForSection][this.props.count].answerUnit} width='170px' enterPressed={(e) => this.handleEnterPressed(e)} /> 
-                        <Button action="Next" bgColor='#cf3721' disabled={this.state.nextButtonDisabled} 
-                        clicked={() => this.onAnswerChoose()} />
-                    </Wrapper>: 
-                    // the question renders a radio button options when the question requires this type of answer
-                    <SelectInput ref={this.selectInputRef} 
-                    options={surveyQuestions[this.placeholderForSection][this.props.count].answerOptions} 
-                    name={surveyQuestions[this.placeholderForSection][this.props.count].dataKey} changed={(e) => this.onAnswerSelected(e) } /> }
+                {this.resolveQuestionOption()}
                 {surveyQuestions[this.placeholderForSection][this.props.count].extra ? <ExtraInfo>{surveyQuestions[this.placeholderForSection][this.props.count].extra}</ExtraInfo> : null}
             </div>
         )
@@ -202,7 +269,8 @@ const mapDispatchToProps = dispatch => {
     return {
         onAnswerSubmit: (textVal) => dispatch({type: actionTypes.ANSWER_SURVEY, inputValue: textVal}),
         onPreviousClick: () => dispatch({type: actionTypes.PREVIOUS_QUESTION}),
-        onAnswerSelect: (selectVal) => dispatch({type: actionTypes.SELECT_SURVEY, selectedValue: selectVal})
+        onAnswerSelect: (selectVal) => dispatch({type: actionTypes.SELECT_SURVEY, selectedValue: selectVal}),
+        onCheckedAnswersSubmitted: (checkedVals) => dispatch({type: actionTypes.SUBMIT_ANSWERS_CHECKED, checkedValues: checkedVals })
     }
 }
 
