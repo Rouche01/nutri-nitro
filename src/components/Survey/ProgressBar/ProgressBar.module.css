@@ -41,11 +41,15 @@
     z-index: 1;
 }
 
+.ProgressBar li:nth-child(2)::after, .ProgressBar li:nth-child(2)::before {
+    background-color: #cf3721;
+}
+
 .ProgressBar li:first-child:after {
     content: none;
 }
 
-.ProgressBar li.active {
+.ProgressBar li.active, .ProgressBar li:nth-child(2) {
     color: #cf3721;
 }
 

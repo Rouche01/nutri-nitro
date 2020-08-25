@@ -67,21 +67,50 @@ const reducer = (state = initialState, action) => {
             }
             return newState;
         case actionTypes.SUBMIT_ANSWERS_CHECKED:
-            let newAnswer = {
-                dataKey: surveyQuestions[surveySection[state.sectionCounter]][state.counter].dataKey,
-                id: state.questionId,
-                answer: action.checkedValues
-           }
-            return {
-                ...state,
-                counter: state.counter + 1,
-                questionId: state.questionId + 1,
-                answers: {
-                    ...state.answers,
-                    [surveySection[state.sectionCounter]]: state.answers[surveySection[state.sectionCounter]].concat(newAnswer)
-                },
-                inputVal: action.checkedValues,
+            let newStateChecked;
+            if(!state.answers[surveySection[state.sectionCounter]].some(answer => answer.id === state.questionId)) {
+                let newAnswer = {
+                    dataKey: surveyQuestions[surveySection[state.sectionCounter]][state.counter].dataKey,
+                    id: state.questionId,
+                    answer: action.checkedValues
+               }
+                newStateChecked = {
+                    ...state,
+                    counter: state.counter + 1,
+                    questionId: state.questionId + 1,
+                    answers: {
+                        ...state.answers,
+                        [surveySection[state.sectionCounter]]: state.answers[surveySection[state.sectionCounter]].concat(newAnswer)
+                    },
+                    inputVal: action.checkedValues,
+                }
+            } else if(state.answers[surveySection[state.sectionCounter]].some(answer => answer.id === state.questionId) 
+            && state.answers[surveySection[state.sectionCounter]][state.counter].answer !== action.checkedValues){
+                newStateChecked = {
+                    ...state,
+                    counter: state.counter + 1,
+                    questionId: state.questionId + 1,
+                    inputVal: action.checkedValues,
+                    answers: {
+                        ...state.answers,
+                        [surveySection[state.sectionCounter]]: state.answers[surveySection[state.sectionCounter]].map((ans, i) => {
+                            if (i === state.counter) {
+                                return {...ans, answer: action.checkedValues}
+                            } else {
+                                return ans
+                            }
+                        })
+                    }
+                }
+            } else {
+                newStateChecked = {
+                    ...state,
+                    counter: state.counter + 1,
+                    questionId: state.questionId + 1,
+                    inputVal: action.checkedValues,
+                }
             }
+            return newStateChecked;
         case actionTypes.PREVIOUS_QUESTION:
             return {
                 ...state,

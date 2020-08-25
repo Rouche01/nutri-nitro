@@ -58,6 +58,16 @@ class Survey extends Component {
                         selOptions[i].children[0].checked = true
                     }
                 }
+            } else if(surveyQuestions[this.placeholderForSection][this.props.count].answerType === 'CheckBox') {
+                const checkOptions = this.checkboxInputRef.current.children;
+                const savedAns = this.props.answers[this.placeholderForSection][this.props.count].answer;
+                for(let i = 0; i < checkOptions.length; i ++) {
+                    for(let j = 0; j < savedAns.length; j++) {
+                        if(checkOptions[i].classList.value.split(' ')[1] === savedAns[j].split(' ')[0]) {
+                            checkOptions[i].children[0].checked = true;
+                        }
+                    }
+                }
             }
             this.setState({
                 nextButtonDisabled: false
@@ -80,7 +90,6 @@ class Survey extends Component {
     componentDidUpdate(prevProps, prevState) {
         // console.log(this.state.nextButtonDisabled);
 
-        // console.log(this.props.count, 'did' );
 
         if(prevProps.sectionCounter !== this.props.sectionCounter) {
             this.placeholderForSection = surveySection[this.props.sectionCounter];
@@ -204,10 +213,10 @@ class Survey extends Component {
         if(surveyQuestions[this.placeholderForSection][this.props.count].answerType === "TextInput") {
             return (
                 <Wrapper>
-                        <TextInput ref={this.textInputRef} changed={this.checkInputState} type='number' 
-                        unit={surveyQuestions[this.placeholderForSection][this.props.count].answerUnit} width='170px' enterPressed={(e) => this.handleEnterPressed(e)} /> 
-                        <Button action="Next" bgColor='#cf3721' disabled={this.state.nextButtonDisabled} 
-                        clicked={() => this.onAnswerChoose()} />
+                    <TextInput ref={this.textInputRef} changed={this.checkInputState} type='number' 
+                    unit={surveyQuestions[this.placeholderForSection][this.props.count].answerUnit} width='170px' enterPressed={(e) => this.handleEnterPressed(e)} /> 
+                    <Button action="Next" bgColor='#cf3721' disabled={this.state.nextButtonDisabled} 
+                    clicked={() => this.onAnswerChoose()} />
                 </Wrapper>
             )
         } else if(surveyQuestions[this.placeholderForSection][this.props.count].answerType === "SelectInput") {

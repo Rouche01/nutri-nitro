@@ -23,7 +23,7 @@
 } */
 
 .CheckboxInput input:checked ~ label {
-    background-color: red;
+    background-color: #cf3721;
     color: #fff;
 }
 
