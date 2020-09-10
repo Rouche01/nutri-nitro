@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as actionTypes from '../../../store/actions' 
+import * as actionTypes from '../../../store/actionTypes';
 
 import styles from './PredictWeightStatus.module.css';
 import Button from '../../Survey/Button/Button';
@@ -9,28 +9,30 @@ import Button from '../../Survey/Button/Button';
 class PredictWeightStatus extends Component {
     state = {
         guessWeight: '',
+        goalDate: ''
     }
 
     componentDidMount() {
         console.log('mount');
-        window.history.pushState(null, null, window.location.pathname);
-        window.addEventListener('popstate', this.customizeBrowserPrev, false);
 
         this.setState({
             guessWeight: this.determineWeightStatus(),
+            goalDate: this.determineDuration()
         })
+
+        this.determineDuration();
     }
 
     componentWillUnmount() {
-        window.removeEventListener('popstate', this.customizeBrowserPrev, false);
+
     }
 
-    customizeBrowserPrev = (e) => {
-        e.preventDefault();
-        // console.log('Unmount');
-        this.props.onBrowserBackClicked();
-        this.props.history.goBack();
-    }
+    // customizeBrowserPrev = (e) => {
+    //     e.preventDefault();
+    //     // console.log('Unmount');
+    //     this.props.onBrowserBackClicked();
+    //     this.props.history.goBack();
+    // }
 
     determineWeightStatus = () => {
         let predictedWeight;
@@ -45,8 +47,31 @@ class PredictWeightStatus extends Component {
         return predictedWeight;
     }
 
+    determineDuration = () => {
+        const months = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
+        ]
+        const currentDate = new Date();
+        currentDate.setMonth(currentDate.getMonth() + 2);
+        let targetDate = currentDate.toLocaleDateString('en-GB');
+        targetDate = targetDate.split('/');
+        const targetMonth = months[targetDate[1] - 1]
+        return (`${targetMonth}, ${targetDate[0]}`);
+    }
+
     continueToNextSection = () => {
-        this.props.onNextClicked(this.props.history.location.state.emailInput);
+        this.props.onNextClicked();
         this.props.history.push('/survey');
     }
 
@@ -54,7 +79,7 @@ class PredictWeightStatus extends Component {
         return (
             <div className={styles.PredictWeightStatus}>
                 <h4>Based on your answers, you will be...</h4>
-                <h2>{this.state.guessWeight}kg by August 20</h2>
+                <h2>{this.state.guessWeight}kg by {this.state.goalDate}</h2>
                 <p className={styles.Terms}>Provided, you follow the plans strictly<br /> Read <Link to="/" >Terms & Conditions</Link></p>
                 <hr />
                 <div className={styles.ExtraInfo}>
@@ -80,8 +105,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onNextClicked: (emailInput) => dispatch({type: actionTypes.TO_NEXT_SECTION, userEmail: emailInput}),
-        onBrowserBackClicked: () => dispatch({type: actionTypes.BROWSER_PREVIOUS_SECTION})
+        onNextClicked: () => dispatch({type: actionTypes.TO_NEXT_SECTION}),
     }
 }
 

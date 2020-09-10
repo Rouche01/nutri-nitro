@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as actionTypes from '../../../store/actions';
+import * as actionTypes from '../../../store/actionTypes';
 
 import styles from './EmailInfo.module.css';
 import Question from '../Question/Question';
@@ -17,25 +17,21 @@ class EmailInfo extends Component {
     }
 
     componentDidMount() {
-        window.history.pushState(null, null, window.location.pathname);
-        window.addEventListener('popstate', this.customizeBrowserBackButton, false);
+        if(this.props.userInfo.email) {
+            this.emailInpuRef.current.value = this.props.userInfo.email;
+            this.setState({
+                continueButtonDisabled: false
+            })
+        }
     }
 
-    // componentDidUpdate() {
-    //     console.log(this.emailInpuRef);
-    // }
+    componentDidUpdate() {
+
+    }
 
 
     componentWillUnmount() {
-        // console.log('Unmount');
-        window.removeEventListener('popstate', this.customizeBrowserBackButton, false);
-    }
-
-    customizeBrowserBackButton = (e) => {
-        e.preventDefault();
-        // console.log('Unmount');
-        this.props.onBackClicked();
-        this.props.history.goBack();
+        
     }
 
     emailInpuRef = React.createRef();
@@ -43,16 +39,12 @@ class EmailInfo extends Component {
 
     previousSection = () => {
         // console.log('Hello');
-        this.props.onBackClicked();
         this.props.history.goBack();
     }
 
     continueToSeeResult = () => {
-        this.props.onContinueClicked();
-        this.props.history.push({ pathname: '/predict-weight', 
-        state: { 
-            emailInput: this.emailInpuRef.current.value
-        }});
+        this.props.onContinueClicked(this.emailInpuRef.current.value);
+        this.props.history.push({ pathname: '/predict-weight'});
     }
 
     checkEmailInput = () => {
@@ -96,14 +88,14 @@ const mapStateToProps = state => {
         questionId: state.questionId,
         sectionCounter: state.sectionCounter,
         answers: state.answers,
-        inputVal: state.inputVal
+        inputVal: state.inputVal,
+        userInfo: state.userInfo
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onBackClicked: () => dispatch({type: actionTypes.PREVIOUS_SECTION}),
-        onContinueClicked: () => dispatch({type: actionTypes.NEXT_BREAK})
+        onContinueClicked: (email) => dispatch({type: actionTypes.SAVE_USER_EMAIL, userEmail: email})
     }
 }
 

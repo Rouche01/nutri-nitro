@@ -1,5 +1,5 @@
 import { surveySection, surveyQuestions } from '../questions/SurveyQuestions';
-import * as actionTypes from './actions';
+import * as actionTypes from './actionTypes';
 
 const initialState = {
     counter: 0,
@@ -31,8 +31,6 @@ const reducer = (state = initialState, action) => {
                 }
                 newState = {
                     ...state,
-                    counter: state.counter + 1,
-                    questionId: state.questionId + 1,
                     answers: {
                         ...state.answers,
                         [surveySection[state.sectionCounter]]: state.answers[surveySection[state.sectionCounter]].concat(newAnswer)
@@ -43,8 +41,6 @@ const reducer = (state = initialState, action) => {
             && state.answers[surveySection[state.sectionCounter]][state.counter].answer !== action.inputValue) {
                 newState = {
                     ...state,
-                    counter: state.counter + 1,
-                    questionId: state.questionId + 1,
                     inputVal: action.inputValue,
                     answers: {
                         ...state.answers,
@@ -60,12 +56,16 @@ const reducer = (state = initialState, action) => {
             } else {
                 newState = {
                     ...state,
-                    counter: state.counter + 1,
-                    questionId: state.questionId + 1,
                     inputVal: action.inputValue,
                 }
             }
             return newState;
+        case actionTypes.MOVE_TO_NEXT_QUESTION:
+            return {
+                ...state,
+                counter: state.counter + 1,
+                questionId: state.questionId + 1,
+            }
         case actionTypes.SUBMIT_ANSWERS_CHECKED:
             let newStateChecked;
             if(!state.answers[surveySection[state.sectionCounter]].some(answer => answer.id === state.questionId)) {
@@ -76,8 +76,6 @@ const reducer = (state = initialState, action) => {
                }
                 newStateChecked = {
                     ...state,
-                    counter: state.counter + 1,
-                    questionId: state.questionId + 1,
                     answers: {
                         ...state.answers,
                         [surveySection[state.sectionCounter]]: state.answers[surveySection[state.sectionCounter]].concat(newAnswer)
@@ -88,8 +86,6 @@ const reducer = (state = initialState, action) => {
             && state.answers[surveySection[state.sectionCounter]][state.counter].answer !== action.checkedValues){
                 newStateChecked = {
                     ...state,
-                    counter: state.counter + 1,
-                    questionId: state.questionId + 1,
                     inputVal: action.checkedValues,
                     answers: {
                         ...state.answers,
@@ -105,8 +101,6 @@ const reducer = (state = initialState, action) => {
             } else {
                 newStateChecked = {
                     ...state,
-                    counter: state.counter + 1,
-                    questionId: state.questionId + 1,
                     inputVal: action.checkedValues,
                 }
             }
@@ -131,8 +125,6 @@ const reducer = (state = initialState, action) => {
 
                newStateSelect = {
                    ...state,
-                   counter: state.counter + 1,
-                    questionId: state.questionId + 1,
                     answers: {
                         ...state.answers,
                         [surveySection[state.sectionCounter]]: state.answers[surveySection[state.sectionCounter]].concat(newAnswer)
@@ -144,8 +136,6 @@ const reducer = (state = initialState, action) => {
             && state.answers[surveySection[state.sectionCounter]][state.counter].answer !== action.selectedValue) {
                 newStateSelect = {
                     ...state,
-                    counter: state.counter + 1,
-                    questionId: state.questionId + 1,
                     inputVal: action.inputValue,
                     answers: {
                         ...state.answers,
@@ -161,8 +151,6 @@ const reducer = (state = initialState, action) => {
             } else {
                 newStateSelect = {
                     ...state,
-                    counter: state.counter + 1,
-                    questionId: state.questionId + 1,
                     inputVal: action.selectedValue,
                 }
             }
@@ -170,14 +158,23 @@ const reducer = (state = initialState, action) => {
         case actionTypes.PREVIOUS_SECTION:
             return {
                 ...state,
-                counter: 0,
-                questionId: 1,
+                sectionCounter: state.sectionCounter - 1,
+                counter: surveyQuestions[surveySection[state.sectionCounter - 1]].length - 1,
+                questionId: surveyQuestions[surveySection[state.sectionCounter - 1]].length
             }
-        case actionTypes.NEXT_BREAK:
+        case actionTypes.RESET_QUESTIONS:
             return {
                 ...state,
-                counter: 0,
-                questionId: 1
+                counter: surveyQuestions[surveySection[state.sectionCounter - 1]].length - 1,
+                questionId: surveyQuestions[surveySection[state.sectionCounter - 1]].length
+            }
+        case actionTypes.SAVE_USER_EMAIL:
+            return {
+                ...state,
+                userInfo: {
+                    ...state.userInfo,
+                    email: action.userEmail
+                }
             }
         case actionTypes.TO_NEXT_SECTION:
             console.log(action.userEmail);
@@ -186,10 +183,6 @@ const reducer = (state = initialState, action) => {
                 counter: 0,
                 sectionCounter: state.sectionCounter + 1,
                 questionId: 1,
-                userInfo: {
-                    ...state.userInfo,
-                    email: action.userEmail
-                }
             }
         case actionTypes.BROWSER_PREVIOUS_SECTION:
             return {

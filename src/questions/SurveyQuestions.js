@@ -125,7 +125,7 @@ export const surveyQuestions = {
             answerUnit: null,
         },
         {
-            question: 'Havs your weight ever affected your ability to socialize or engage with friends and family?',
+            question: 'Has your weight ever affected your ability to socialize or engage with friends and family?',
             dataKey: 'Weight Affects Socialize',
             answerType: 'SelectInput',
             answerOptions: [

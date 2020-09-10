@@ -3,7 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as actionTypes from '../../store/actions';
+import * as actionTypes from '../../store/actionTypes';
+import { answerTextResponse } from '../../store/actions/surveyActions';
 
 import styles from './Survey.module.css';
 import Question from './Question/Question';
@@ -17,35 +18,43 @@ import ExtraInfo from '../ExtraInfo/ExtraInfo';
 import CheckboxInput from './CheckboxInput/CheckboxInput';
 
 class Survey extends Component {
+
+    // these are locally set state
     state = {
             nextButtonDisabled: true,
             sectionCount: null,
             checkedValues: []
     }
 
+
+    // these are DOM references to the survey response used to capture the values
     textInputRef = React.createRef();
     selectInputRef = React.createRef();
     checkboxInputRef = React.createRef();
 
+    // this is the current section of the survey question
+    placeholderForSection = surveySection[this.props.sectionCounter];
+
     componentDidMount() {
 
+        // check for non-initial section and first question to customize browser back button
+        if(this.props.sectionCounter !== 0 && this.props.count === 0) {
+            console.log('works');
+            window.history.pushState(null, null, window.location.pathname);
+            window.addEventListener('popstate', this.customizeBrowserPrev, false);
+        }
+
+        // on component mount check if the survey response type is a text-input & add focus if yes
         if(surveyQuestions[this.placeholderForSection][this.props.count].answerType === 'TextInput') {
             this.textInputRef.current.focus();
         }
 
-        let sectionCount;
-        for(let i = 0; i < surveyQuestions[surveySection[this.props.sectionCounter]].length; i++) {
-            if(!sectionCount) {
-                sectionCount = 1;
-            } else {
-                sectionCount = sectionCount + 1
-            }
-        }
-
+        // here we count the amount of question in a section & then set the state
         this.setState({
-            sectionCount: sectionCount
+            sectionCount: surveyQuestions[this.placeholderForSection].length
         })
 
+        // on component mount, we are checking if the question has already been answered
         let checker = this.props.answers[this.placeholderForSection].findIndex(answer => answer.id === this.props.questionId);
         if(checker >= 0) {
             // if it has an answer, set the input value to that answer & enable the next button
@@ -85,14 +94,26 @@ class Survey extends Component {
         }
     }
 
-    placeholderForSection = surveySection[this.props.sectionCounter];
+
+    componentWillUnmount() {
+        window.removeEventListener('popstate', this.customizeBrowserPrev, false);
+        if(this.props.sectionCounter !== 0 && this.props.count === 0) {
+            this.props.toPreviousSection();
+        }
+    }
+
 
     componentDidUpdate(prevProps, prevState) {
         // console.log(this.state.nextButtonDisabled);
 
-
+        // on component update we are checking the current section and changing it if there is a section change
         if(prevProps.sectionCounter !== this.props.sectionCounter) {
             this.placeholderForSection = surveySection[this.props.sectionCounter];
+
+            // we also have to recount the amount of question in the new section & then set the state
+            this.setState({
+                sectionCount: surveyQuestions[this.placeholderForSection].length
+            })
         }
 
         // if(prevProps.count !== this.props.count) {
@@ -101,8 +122,10 @@ class Survey extends Component {
         //     })
         // }
 
+        // using the count state to track the question state
         if(prevProps.inputVal !== this.props.inputVal || prevProps.count !== this.props.count) {
 
+            // on move to next question, check if question has been answered or not
             let checker = this.props.answers[this.placeholderForSection].findIndex(answer => answer.id === this.props.questionId);
             if(checker >= 0) {
                 // if it has an answer, set the input value to that answer & enable the next button
@@ -145,6 +168,12 @@ class Survey extends Component {
         }
     }
 
+    customizeBrowserPrev = (e) => {
+        e.preventDefault();
+        // console.log('Unmount');
+        this.props.history.goBack();
+    }
+
     checkInputState = () => {
         if(this.textInputRef.current.value !== "") {
             this.setState({
@@ -157,11 +186,16 @@ class Survey extends Component {
         }
     }
 
+    // this is used for survey with text response
     onAnswerChoose = () => {
         this.props.onAnswerSubmit(this.textInputRef.current.value);
+        this.props.moveToNextQuestion();
+        // this.props.answerTextResponse(this.textInputRef.current.value);
     }
 
+    // this is used for multi-choice questions
     onAnswerChecked = (e) => {
+        // if the item checked hasn't been checked(not included in the answer), include it.
         if(!this.state.checkedValues.includes(e.target.value)) {
             console.log(this.state.checkedValues.includes(e.target.value));
             this.setState({
@@ -170,6 +204,7 @@ class Survey extends Component {
             }, () => {
                 console.log(this.state.checkedValues);
             })
+            // if the item has been checked, remove it from the array of answers
         } else {
             const copyCheckedValues = [...this.state.checkedValues];
             const duplicateIdx = copyCheckedValues.findIndex(val => val === e.target.value);
@@ -187,18 +222,25 @@ class Survey extends Component {
         }
     }
 
+    // use the mapped action to affect global state
     onCheckdValsSubmit = () => {
         this.props.onCheckedAnswersSubmitted(this.state.checkedValues);
+        this.props.moveToNextQuestion();
     }
 
+    // this is used for a single choice answer
     onAnswerSelected = (e) => {
         console.log(this.props.count);
+
+        // check if we have exhausted the question for the section
         if(this.props.count === (this.state.sectionCount - 1)) {
             console.log('working');
             this.props.onAnswerSelect(e.target.value);
+            // navigate to a new section after storing answer to global state
             this.props.history.push({pathname: '/survey/email'});
         } else {
-            this.props.onAnswerSelect(e.target.value);  
+            this.props.onAnswerSelect(e.target.value);
+            this.props.moveToNextQuestion(); 
         }
     }
 
@@ -206,6 +248,7 @@ class Survey extends Component {
     handleEnterPressed = (e) => {
         if(e.key === 'Enter') {
             this.props.onAnswerSubmit(this.textInputRef.current.value);
+            this.props.moveToNextQuestion();
         }
     }
 
@@ -277,10 +320,17 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onAnswerSubmit: (textVal) => dispatch({type: actionTypes.ANSWER_SURVEY, inputValue: textVal}),
+        moveToNextQuestion: () => dispatch({ type: actionTypes.MOVE_TO_NEXT_QUESTION }),
         onPreviousClick: () => dispatch({type: actionTypes.PREVIOUS_QUESTION}),
         onAnswerSelect: (selectVal) => dispatch({type: actionTypes.SELECT_SURVEY, selectedValue: selectVal}),
-        onCheckedAnswersSubmitted: (checkedVals) => dispatch({type: actionTypes.SUBMIT_ANSWERS_CHECKED, checkedValues: checkedVals })
+        onCheckedAnswersSubmitted: (checkedVals) => dispatch({type: actionTypes.SUBMIT_ANSWERS_CHECKED, checkedValues: checkedVals }),
+        toPreviousSection: () => dispatch({type: actionTypes.PREVIOUS_SECTION}),
+        resetQuestionNumbers: () => dispatch({type: actionTypes.RESET_QUESTIONS})
     }
 }
+
+// const mapActionToProps = {
+//     answerTextResponse,
+// };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Survey);
