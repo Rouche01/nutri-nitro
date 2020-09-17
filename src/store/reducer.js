@@ -5,10 +5,12 @@ const initialState = {
     counter: 0,
     questionId: 1,
     sectionCounter: 0,
+    surveyQuestions: surveyQuestions,
     // section: 'demography',
     answers: {
         demography: [],
-        eatingHabits: []
+        eatingHabits: [],
+        activityAndNutrition: []
     },
     inputVal: null,
     userInfo: {
@@ -19,12 +21,13 @@ const initialState = {
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.ANSWER_SURVEY:
+            console.log('answer-survey');
             let newState;
             console.log(action.inputValue);
             if(!state.answers[surveySection[state.sectionCounter]].some(answer => answer.id === state.questionId)) {
                 // if it does not exist, we create a new answer
                 let newAnswer = {
-                     dataKey: surveyQuestions[surveySection[state.sectionCounter]][state.counter].dataKey,
+                     dataKey: state.surveyQuestions[surveySection[state.sectionCounter]][state.counter].dataKey,
                      id: state.questionId,
                      answer: action.inputValue
                     //  this.textInputRef.current.value
@@ -61,16 +64,47 @@ const reducer = (state = initialState, action) => {
             }
             return newState;
         case actionTypes.MOVE_TO_NEXT_QUESTION:
+            console.log('works');
             return {
                 ...state,
                 counter: state.counter + 1,
                 questionId: state.questionId + 1,
+            };
+        case actionTypes.ADD_CONDITIONAL_QUESTION:
+            const copySectionQuestions = state.surveyQuestions[surveySection[state.sectionCounter]];
+            copySectionQuestions.splice(action.position, 0, action.condQuestn);
+            return {
+                ...state,
+                surveyQuestions: {
+                    ...state.surveyQuestions,
+                    [surveySection[state.sectionCounter]]: copySectionQuestions
+                }
+            }
+        case actionTypes.REMOVE_CONDITIONAL_QUESTION:
+            const copySectionQuestions2 = state.surveyQuestions[surveySection[state.sectionCounter]];
+            copySectionQuestions2.splice(action.position, 1);
+            return {
+                ...state,
+                surveyQuestions: {
+                    ...state.surveyQuestions,
+                    [surveySection[state.sectionCounter]]: copySectionQuestions2
+                }
+            }
+        case actionTypes.REMOVE_CONDITIONAL_ANSWERS:
+            const copySurveyAnswers = state.answers[surveySection[state.sectionCounter]];
+            copySurveyAnswers.splice(action.position, copySurveyAnswers.length - action.position);
+            return {
+                ...state,
+                answers: {
+                    ...state.answers,
+                    [surveySection[state.sectionCounter]]: copySurveyAnswers
+                }
             }
         case actionTypes.SUBMIT_ANSWERS_CHECKED:
             let newStateChecked;
             if(!state.answers[surveySection[state.sectionCounter]].some(answer => answer.id === state.questionId)) {
                 let newAnswer = {
-                    dataKey: surveyQuestions[surveySection[state.sectionCounter]][state.counter].dataKey,
+                    dataKey: state.surveyQuestions[surveySection[state.sectionCounter]][state.counter].dataKey,
                     id: state.questionId,
                     answer: action.checkedValues
                }
@@ -117,7 +151,7 @@ const reducer = (state = initialState, action) => {
             if(!state.answers[surveySection[state.sectionCounter]].some(answer => answer.id === state.questionId)) {
                 // if it does not exist, we create a new answer
                 let newAnswer = {
-                    dataKey: surveyQuestions[surveySection[state.sectionCounter]][state.counter].dataKey,
+                    dataKey: state.surveyQuestions[surveySection[state.sectionCounter]][state.counter].dataKey,
                     id: state.questionId,
                     answer: action.selectedValue
                    //  e.target.value
@@ -159,14 +193,14 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 sectionCounter: state.sectionCounter - 1,
-                counter: surveyQuestions[surveySection[state.sectionCounter - 1]].length - 1,
-                questionId: surveyQuestions[surveySection[state.sectionCounter - 1]].length
+                counter: state.surveyQuestions[surveySection[state.sectionCounter - 1]].length - 1,
+                questionId: state.surveyQuestions[surveySection[state.sectionCounter - 1]].length
             }
         case actionTypes.RESET_QUESTIONS:
             return {
                 ...state,
-                counter: surveyQuestions[surveySection[state.sectionCounter - 1]].length - 1,
-                questionId: surveyQuestions[surveySection[state.sectionCounter - 1]].length
+                counter: state.surveyQuestions[surveySection[state.sectionCounter - 1]].length - 1,
+                questionId: state.surveyQuestions[surveySection[state.sectionCounter - 1]].length
             }
         case actionTypes.SAVE_USER_EMAIL:
             return {

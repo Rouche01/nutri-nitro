@@ -12,6 +12,14 @@ class PredictWeightStatus extends Component {
         goalDate: ''
     }
 
+    componentWillMount() {
+        if(this.props.sectionCounter < 1 ) {
+            if(this.props.count < 7) {
+                this.props.history.goBack();
+            }
+        }
+    }
+
     componentDidMount() {
         console.log('mount');
 
@@ -40,9 +48,15 @@ class PredictWeightStatus extends Component {
         const targetWeight = parseInt(demographyAnswers.find(answer => answer.dataKey === "Ideal weight").answer);
         const presentWeight = parseInt(demographyAnswers.find(answer => answer.dataKey === "Present weight").answer);
         if (presentWeight > targetWeight) {
-            predictedWeight = presentWeight - 8;
+            predictedWeight = presentWeight - 6;
+            if(predictedWeight < targetWeight) {
+                predictedWeight = targetWeight
+            }
         } else {
-            predictedWeight = presentWeight + 8;
+            predictedWeight = presentWeight + 6;
+            if(predictedWeight > targetWeight) {
+                predictedWeight = targetWeight;
+            }
         }
         return predictedWeight;
     }
@@ -63,7 +77,7 @@ class PredictWeightStatus extends Component {
             'December'
         ]
         const currentDate = new Date();
-        currentDate.setMonth(currentDate.getMonth() + 2);
+        currentDate.setMonth(currentDate.getMonth() + 3);
         let targetDate = currentDate.toLocaleDateString('en-GB');
         targetDate = targetDate.split('/');
         const targetMonth = months[targetDate[1] - 1]

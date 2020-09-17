@@ -1,14 +1,31 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import styles from './ProgressBar.module.css';
 
-const progressBar = (props) => (
-    <ul className={styles.ProgressBar}>
-        <li className={styles.active}>Demographics</li>
-        <li>Eating Habits</li>
-        <li>Work Habits</li>
-        <li>Food Preference</li>
-    </ul>
-);
+class ProgressBar extends Component {
+    render() {
+        return(
+            <ul className={styles.ProgressBar}>
+                <li className={styles.active}>Demographics</li>
+                <li className={this.props.sectionCounter > 0 && styles.secondStage}>
+                    Habits & Behaviours
+                </li>
+                <li className={this.props.sectionCounter > 1 && styles.thirdStage}>
+                    Activity & Nutrition
+                </li>
+                <li className={this.props.sectionCounter > 2 && styles.lastStage}>
+                    Finish
+                </li>
+            </ul>
+        )
+    }
+} 
 
-export default progressBar;
+const mapStateToProps = state => {
+    return {
+        sectionCounter: state.sectionCounter
+    }
+}
+
+export default connect(mapStateToProps)(ProgressBar);

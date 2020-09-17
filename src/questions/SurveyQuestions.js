@@ -150,8 +150,34 @@ export const surveyQuestions = {
                 'Yes', 'No'
             ],
             answerUnit: null,
-        }
+        },
     ],
+    activityAndNutrition: [
+        {
+            question: 'What area do you want to focus on first in your plan?',
+            dataKey: 'Plan Priority',
+            answerType: 'SelectInput',
+            answerOptions: [
+                'Nutrition habits',
+                'Physical activity habits'
+            ],
+            answerUnit: null
+        },
+        {
+            question: 'Which of the following nutrition habits is most important for you to address first?',
+            dataKey: 'Habits priority',
+            answerType:'SelectInput',
+            answerOptions: [
+                'Controlling my portion sizes',
+                'Meal planning and/or cooking more at home',
+                'Developing more consistent meal patterns',
+                'Making healthy decisions in social settings',
+                'Feeling more in control of when I start and stop eating',
+                'Choosing foods independent of how I am feeling'
+            ],
+            answerUnit: null
+        }
+    ]
     
 }
 

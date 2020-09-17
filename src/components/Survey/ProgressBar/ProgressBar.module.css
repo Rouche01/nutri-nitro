@@ -41,15 +41,35 @@
     z-index: 1;
 }
 
-.ProgressBar li:nth-child(2)::after, .ProgressBar li:nth-child(2)::before {
-    background-color: #cf3721;
+.secondStage::after, .secondStage::before {
+    background-color: #cf3721 !important;
+}
+
+.secondStage {
+    color: #cf3721 !important;
+}
+
+.thirdStage {
+    color: #cf3721 !important;
+}
+
+.lastStage {
+    color: #cf3721 !important;
+}
+
+.thirdStage::after, .thirdStage::before {
+    background-color: #cf3721 !important;
+}
+
+.lastStage::after, .lastStage::before {
+    background-color: #cf3721 !important;
 }
 
 .ProgressBar li:first-child:after {
     content: none;
 }
 
-.ProgressBar li.active, .ProgressBar li:nth-child(2) {
+.ProgressBar li.active {
     color: #cf3721;
 }
 

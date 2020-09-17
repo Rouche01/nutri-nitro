@@ -16,6 +16,14 @@ class EmailInfo extends Component {
         continueButtonDisabled: true,
     }
 
+    componentWillMount() {
+        if(this.props.sectionCounter < 1 ) {
+            if(this.props.count < 7) {
+                this.props.history.goBack();
+            }
+        }
+    }
+
     componentDidMount() {
         if(this.props.userInfo.email) {
             this.emailInpuRef.current.value = this.props.userInfo.email;
@@ -63,7 +71,6 @@ class EmailInfo extends Component {
 
     render () {
         const extraHtml = `<p>We do not share any personal information. We'll email you a copy of your results & meal plan for convenient access. By submitting your email address, you may also receive email offers from us on products and services. You may unsubscribe at any time.</p>`
-
 
         return (
             <div className={styles.EmailInfo}>
